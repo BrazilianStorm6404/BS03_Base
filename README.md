@@ -1,4 +1,4 @@
-# BS03_Base
+# BS-03 Base
 
 Simple code for our 2019 robot. 
 
