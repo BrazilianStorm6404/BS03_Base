@@ -51,7 +51,7 @@ public class RobotMap {
   /**
    * Drivetrain motor port.
    */
-  private static final int MOTOR_SPARK_FRONT_RIGHT = 0;
+  private static final int MOTOR_SPARK_FRONT_RIGHT = 1;
 
   /**
    * Drivetrain motor port.
@@ -66,19 +66,19 @@ public class RobotMap {
   /**
    * Drivetrain motor port.
    */
-  private static final int MOTOR_SPARK_BACK_RIGHT = 1;
+  private static final int MOTOR_SPARK_BACK_RIGHT = 4;
 
   /**
    * VictorSPX port (cargo deployment).
    */
-  private static final int CLAW_CARGO_VICTORSPX = 12;
+  private static final int CLAW_CARGO_VICTORSPX = 5;
+	
   /**
    * VictorSPX port (claw mode).
    */
   private static final int CLAW_CONTROL_VICTORSP = 6;
   
-
-  private static final int ELEVATOR_VICTORSPX = 14;
+  private static final int ELEVATOR_VICTORSPX = 0;
 
   //private static final int CLIMB_SLEDGE_JAGUAR = 8;
 
