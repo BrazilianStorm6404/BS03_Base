@@ -9,7 +9,6 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.RobotMap.ShuffleBoard;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Tower;
@@ -45,7 +44,6 @@ public class Robot extends TimedRobot {
       outStream.putFrame(mat);
     }
   });
-  public ShuffleBoard m_ShuffleBoard;
 
   @Override
   public void robotInit() {
@@ -55,13 +53,16 @@ public class Robot extends TimedRobot {
     m_claw = new Claw();
     m_oi = new OI();
 
-    m_ShuffleBoard = new ShuffleBoard();
-
-    RobotMap.Sensors.navX.reset();
+    //RobotMap.Sensors.navX.reset();
   }
 
   @Override
   public void robotPeriodic() {
+
+    SmartDashboard.putBoolean("limitDown",m_tower.limitDown.get());
+    SmartDashboard.putBoolean("limitUp",m_tower.limitUp.get());
+    
+    SmartDashboard.putNumber("X",m_oi.driverController.getX());
 
   }
 
@@ -76,7 +77,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-
   }
 
   @Override
@@ -86,34 +86,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-
   }
 
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-
-
-    // data for the ShuffleBoard
-    SmartDashboard.putNumber("x", RobotMap.Sensors.navX.getDisplacementX());
-    SmartDashboard.putNumber("Z", RobotMap.Sensors.navX.getDisplacementZ());
-    SmartDashboard.putNumber("Y", RobotMap.Sensors.navX.getDisplacementY());
-    SmartDashboard.putNumber("Angle", RobotMap.Sensors.navX.getAngle());
-    SmartDashboard.putNumber("pitch", RobotMap.Sensors.navX.getPitch());
-    SmartDashboard.putNumber("yaw", RobotMap.Sensors.navX.getYaw());
-    SmartDashboard.putNumber("roll", RobotMap.Sensors.navX.getRoll());
-
-    SmartDashboard.putNumber("setpoint", Robot.m_drive.getSetpoint());
-    SmartDashboard.putBoolean("optico", RobotMap.Sensors.optical.get());
-    SmartDashboard.putNumber("DirAxis", m_oi.driverController.getRawAxis(5));
-    SmartDashboard.putBoolean("LimitUp", RobotMap.Sensors.Elevator.limitUp.get());
-    SmartDashboard.putBoolean("LimitDOWN", RobotMap.Sensors.Elevator.limitDown.get());
-
-    SmartDashboard.putBoolean("LimitCargo", RobotMap.Sensors.Claw.CargoLimit.get());
-    SmartDashboard.putBoolean("LimitHatch", RobotMap.Sensors.Claw.HatchPanelLimit.get());
-
-    SmartDashboard.putNumber("eixo", Robot.m_oi.driverController.getRawAxis(5));
-
   }
 
   @Override

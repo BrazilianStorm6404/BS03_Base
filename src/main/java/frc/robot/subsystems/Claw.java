@@ -28,19 +28,19 @@ public class Claw extends Subsystem {
   /**
    * Motor that controls cargo intake.
    */
-  private VictorSPX victorIntake;
-  private VictorSP victorControlSP;
+  private VictorSP victorCargo;
+  private VictorSP victorControl;
 
   /**
    * Solenoid that controls hatch panel intake.
    */
-  private DoubleSolenoid solenoidHatch; 
+  //private DoubleSolenoid solenoidHatch; 
 
-  private DigitalInput limitCargo = RobotMap.Sensors.Claw.CargoLimit;
-  private DigitalInput limitHatchPanel = RobotMap.Sensors.Claw.HatchPanelLimit;
+  //private DigitalInput limitCargo = RobotMap.Sensors.Claw.CargoLimit;
+  //private DigitalInput limitHatchPanel = RobotMap.Sensors.Claw.HatchPanelLimit;
 
-  private Boolean hatchIsEnabled = true;
-  private Boolean cargoIsEnabled;
+  private boolean hatchIsEnabled = true;
+  private boolean cargoIsEnabled;
   
   @Override
   public void initDefaultCommand() {
@@ -51,18 +51,18 @@ public class Claw extends Subsystem {
 
   public Claw() { 
 
-    victorIntake = RobotMap.Controllers.Claw.IntakeVictorSPX;    
-    solenoidHatch = RobotMap.Controllers.Claw.solenoidHatch;
-    victorControlSP = RobotMap.Controllers.Claw.ControlVictorSP;
+    victorCargo = new VictorSP(RobotMap.CLAW_CARGO);    
+    //solenoidHatch = RobotMap.Controllers.Claw.solenoidHatch;
+    victorControl    = new VictorSP(RobotMap.CLAW_CONTROL);
 
   }
 
   public void Move(double value){
     
     updateLimits();
-    victorControlSP.set(value);
+    victorControl.set(value);
 
-    /*
+    /*s
     if(value < 0 && !cargoIsEnabled){
       victorControl.set(ControlMode.PercentOutput, value);
     }
@@ -78,38 +78,35 @@ public class Claw extends Subsystem {
   public void pullCargo(){
     updateLimits();
 
-    //if( !hatchIsEnabled){
-     victorIntake.set(ControlMode.PercentOutput, 0.7); // Anything higher than 0.5 may break our mechanism.
+     victorCargo.set(0.75); // Anything higher than 0.5 may break our mechanism.
     
   }
 
   public void dropCargo(){
-    
     updateLimits();
 
-    //if( !hatchIsEnabled){
-     victorIntake.set(ControlMode.PercentOutput, -1); // Anything higher than 0.5 may break our mechanism.
+     victorCargo.set(-0.8); // Anything higher than 0.5 may break our mechanism.
     
   }
 
   public void stopCargo(){
-     victorIntake.set(ControlMode.PercentOutput, 0.0); 
+     victorCargo.set(0.0); 
   }
 
   public void ExtendHatch(){
-    updateLimits();
+    //updateLimits();
 
-    if(hatchIsEnabled){ 
-      solenoidHatch.set(Value.kForward); // This method raises the piston.
-    }
+    //if(hatchIsEnabled){ 
+      //solenoidHatch.set(Value.kForward); // This method raises the piston.
+    //}
   }
 
   public void RecallHatch(){
-    updateLimits();
+    //updateLimits();
 
-    if(hatchIsEnabled){
-      solenoidHatch.set(Value.kReverse); // This method descends the piston.
-    }
+    //if(hatchIsEnabled){
+      //solenoidHatch.set(Value.kReverse); // This method descends the piston.
+    //}
   }
 
   private void updateLimits(){

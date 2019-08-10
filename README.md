@@ -1,8 +1,4 @@
 # BS-03 Base
 
-Simple code for our 2019 robot. 
-
-Supported subsystems:
-* Drivetrain
-* Claw
-* Tower
+Does not include pneumatic code
+Also, claw motor code is just commented as we had removed the related controller

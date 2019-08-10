@@ -27,9 +27,6 @@ public class MoveClaw extends Command {
   @Override
   protected void execute() {
     //testar qual a saida padrao do Trigger
-   Robot.m_claw.Move((Robot.m_oi.driverController.getRawAxis(3)-Robot.m_oi.driverController.getRawAxis(2)) * 0.55);//axis 1,2,3,?,?,?...
-   
-    
   }
 
   // Make this return true when this Command no longer needs to run execute()
