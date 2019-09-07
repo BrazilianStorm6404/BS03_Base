@@ -22,27 +22,6 @@ public class Robot extends TimedRobot {
   public static Tower m_tower;
   public static OI m_oi;
 
-  Thread visionThread = new Thread(() -> { 
-    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-    camera.setResolution(640, 320);
-  
-    CvSink cvSink = CameraServer.getInstance().getVideo();
-    CvSource outStream = CameraServer.getInstance().putVideo("Alinhamento", 640, 320);
-    
-    Mat mat = new Mat();
-    
-    while (!Thread.interrupted()) { 
-      if (cvSink.grabFrame(mat) == 0) {
-        // Send the output the error.
-        outStream.notifyError(cvSink.getError());
-        // skip the rest of the current iteration
-        continue;
-      }
-      // inserir todo o código de alinhamento.
-      outStream.putFrame(mat);
-    }
-  });
-
   @Override
   public void robotInit() {
 
@@ -50,7 +29,10 @@ public class Robot extends TimedRobot {
     m_tower = new Tower();
     m_claw = new Claw();
     m_oi = new OI();
-
+    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
+    UsbCamera camera2 = CameraServer.getInstance().startAutomaticCapture(1);
+    camera.setResolution(640, 320);
+    camera2.setResolution(640, 320);
     //RobotMap.Sensors.navX.reset();
   }
 
