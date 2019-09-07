@@ -11,3 +11,5 @@
 *.json
 *.properties
 *.MF
+.gradle/5.0/fileHashes/fileHashes.bin
+*.lock

@@ -4,7 +4,6 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -50,17 +49,15 @@ public class Claw extends Subsystem {
   }
 
   public Claw() { 
-
     victorCargo = new VictorSP(RobotMap.CLAW_CARGO);    
     //solenoidHatch = RobotMap.Controllers.Claw.solenoidHatch;
-    victorControl    = new VictorSP(RobotMap.CLAW_CONTROL);
-
+    //victorControl    = new VictorSP(RobotMap.CLAW_CONTROL);
   }
 
   public void Move(double value){
     
-    updateLimits();
-    victorControl.set(value);
+    //updateLimits();
+    //victorControl.set(value);
 
     /*s
     if(value < 0 && !cargoIsEnabled){
@@ -76,14 +73,14 @@ public class Claw extends Subsystem {
   }
 
   public void pullCargo(){
-    updateLimits();
+    //updateLimits();
 
      victorCargo.set(0.75); // Anything higher than 0.5 may break our mechanism.
     
   }
 
   public void dropCargo(){
-    updateLimits();
+    //updateLimits();
 
      victorCargo.set(-0.8); // Anything higher than 0.5 may break our mechanism.
     

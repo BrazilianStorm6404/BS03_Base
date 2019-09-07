@@ -29,8 +29,6 @@ public class Robot extends TimedRobot {
     CvSink cvSink = CameraServer.getInstance().getVideo();
     CvSource outStream = CameraServer.getInstance().putVideo("Alinhamento", 640, 320);
     
-    boolean draw = true; // não condiz com a realidade, apenas teste
-    int angle = 10; // não condiz com a realidade e será usado apenas para testes
     Mat mat = new Mat();
     
     while (!Thread.interrupted()) { 
