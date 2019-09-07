@@ -1,0 +1,13 @@
+
+*.class
+*.so
+*.dll
+*.4
+*.debug
+*.jar
+*.lock
+*.bin
+.classpath
+*.json
+*.properties
+*.MF
