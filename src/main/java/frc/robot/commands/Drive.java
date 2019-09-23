@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
@@ -15,6 +16,8 @@ import frc.robot.Robot;
  */
 
 public class Drive extends Command {
+
+  double mover, girar;
 
   /**
    * This command was made to drive the robot.
@@ -37,10 +40,12 @@ public class Drive extends Command {
   
   @Override
   protected void execute() {
-    double mover = Robot.m_oi.driverController.getY(); 
-    double girar = Robot.m_oi.driverController.getX();
+    mover = Robot.m_oi.driverController.getY(); 
+    girar = Robot.m_oi.driverController.getX();
      
     // The motor controller values are based on the joystick analog's axis.
+   
+
     Robot.m_drive.arcadeDrive(mover,girar);
     
   }

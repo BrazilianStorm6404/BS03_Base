@@ -12,9 +12,11 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
-import frc.robot.RobotMap;
 import frc.robot.commands.Drive;
+import frc.robot.RobotMap;
 
 
 /**
@@ -26,9 +28,9 @@ import frc.robot.commands.Drive;
  */
 public class Drivetrain extends PIDSubsystem {
 
-   DifferentialDrive drive;
-   AHRS navX;
-   public double pidOutput;
+  private DifferentialDrive drive;
+  AHRS navX;
+  private double pidOutput;
 
   public Drivetrain() {
      
@@ -36,13 +38,20 @@ public class Drivetrain extends PIDSubsystem {
     super("Drivetrain", 0.1,0.0003, 0); 
 
     // We will use the navx to get feedback about the robot's yaw and acceleration
-    navX = RobotMap.Sensors.navX; 
 
     // The differential drive uses the left and right motors from the robot as parameters.
-    drive = new DifferentialDrive(RobotMap.Controllers.Drive.Left.Group, RobotMap.Controllers.Drive.Right.Group); 
+
+    Spark BackLeft = new Spark(RobotMap.MOTOR_BACK_LEFT);
+    Spark FrontLeft = new Spark(RobotMap.MOTOR_FRONT_LEFT);
+    Spark FrontRight = new Spark(RobotMap.MOTOR_FRONT_RIGHT);
+    Spark BackRight = new Spark(RobotMap.MOTOR_BACK_RIGHT);
+
+    SpeedControllerGroup Left = new SpeedControllerGroup(BackLeft, FrontLeft);
+    SpeedControllerGroup Right = new SpeedControllerGroup(BackRight, FrontRight);
+    
+    drive = new DifferentialDrive(Left,Right); 
 
     // These are the PID configs. DONT FORGET TO ENABLE() IT.
-    navX.reset();
     setInputRange(-180f,180f);
     setOutputRange(-0.5f, 0.5f); 
     setAbsoluteTolerance(3);
@@ -82,8 +91,8 @@ public class Drivetrain extends PIDSubsystem {
    */
   @Override
   protected double returnPIDInput() { 
+    return 0;
     // This is the input for the PID class. We are using the navx's Yaw.
-    return(navX.getAngle()); 
   }
 
   /**

@@ -7,88 +7,47 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.MoveTower;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 
 public class Tower extends Subsystem {
   
 
-  public VictorSPX victorSPX;
+  public Spark spark;
   public DigitalInput limitUp;
   public DigitalInput limitDown;
-  public Encoder heightEncoder;
-  
+
 
   public Tower(){
   
-    victorSPX = RobotMap.Controllers.Tower.ElevatorVictorSPX;
+    spark = new Spark(RobotMap.ELEVATOR);
 
-    limitUp = RobotMap.Sensors.Elevator.limitUp;
-    limitDown = RobotMap.Sensors.Elevator.limitDown;  
-    
-    
-    //heightEncoder = RobotMap.Sensors.Elevator.heightEncoder;
-
-    //heightEncoder.setDistancePerPulse(.0312);
-    //heightEncoder.reset();
+    limitUp = new DigitalInput(RobotMap.LIMIT_TOWER_UP);
+    limitDown = new DigitalInput(RobotMap.LIMIT_TOWER_DOWN);
 
   }
 
   
   public void move(double vel){
-
-    /**
-     * @todo Refazer esse sistema usando sensor de cor ligado direto na RoboRIO.
-    if ((RobotMap.ShuffleBoard.red) || (RobotMap.ShuffleBoard.black)) {
-      victorSPX.set(ControlMode.PercentOutput,vel*0.2);
-    } else if (RobotMap.ShuffleBoard.green) { 
+    //corrigir
+    if (false) { 
       stop();
     } else {
-      victorSPX.set(ControlMode.PercentOutput, vel);
+      double potencia = vel;
+      spark.set(potencia);
     }
-     */
-
-    victorSPX.set(ControlMode.PercentOutput, vel);
     
-    /*
-    if(heightEncoder.getDistance() < 5 && vel < 0){
-
-      if(limitDown.get()){
-        stop();
-        return;
-      }
-
-      victorSP.set(vel * 0.5);
-
-    } else if(heightEncoder.getDistance() > 95 && vel > 0){
-
-      if (limitDown.get()) {
-        stop();
-        return;
-      }
-
-      victorSP.set(vel * 0.5);
-
-    } else {
-
-      victorSP.set(vel);
-
-    }
-    */
   }
   
   public void stop() {
-
-    victorSPX.set(ControlMode.PercentOutput, 0);
-
+    spark.set(0);
   }
 
 
