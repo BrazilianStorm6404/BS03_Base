@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 /**
@@ -42,17 +43,20 @@ public class Drive extends Command {
   protected void execute() {
     mover = Robot.m_oi.driverController.getY(); 
     girar = Robot.m_oi.driverController.getX();
-     
-    // The motor controller values are based on the joystick analog's axis.
-   
 
-    Robot.m_drive.arcadeDrive(mover,girar);
+    SmartDashboard.putBoolean("Marcha",Robot.m_oi.buttonX.get());
+
+    if (Robot.m_oi.buttonX.get()) {
+      Robot.m_drive.arcadeDrive(mover*0.5,girar*0.5);
+    } else {
+      Robot.m_drive.arcadeDrive(mover,girar);
+    }
     
   }
 
   
   /**
-   * <p> returns false so it doesn`t execute more than once </p> 
+   * <p> returns false so it doesn`t execute more th-an once </p> 
    * @return boolean false so it doesn`t execute more than once 
    */
   @Override

@@ -1,9 +1,5 @@
 package frc.robot;
 
-import org.opencv.core.Mat;
-
-import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -15,8 +11,6 @@ import frc.robot.subsystems.Tower;
 
 
 public class Robot extends TimedRobot {
-
- 
   public static Drivetrain m_drive;
   public static Claw m_claw;
   public static Tower m_tower;
@@ -33,17 +27,12 @@ public class Robot extends TimedRobot {
     UsbCamera camera2 = CameraServer.getInstance().startAutomaticCapture(1);
     camera.setResolution(640, 320);
     camera2.setResolution(640, 320);
-    //RobotMap.Sensors.navX.reset();
   }
 
   @Override
   public void robotPeriodic() {
-
-    SmartDashboard.putBoolean("limitDown",m_tower.limitDown.get());
-    SmartDashboard.putBoolean("limitUp",m_tower.limitUp.get());
-    
-    SmartDashboard.putNumber("X",m_oi.driverController.getX());
-
+    SmartDashboard.putBoolean("limitDown",m_claw.limitDown.get());
+    SmartDashboard.putBoolean("limitUp",m_claw.limitUp.get());
   }
 
   @Override

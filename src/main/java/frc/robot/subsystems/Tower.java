@@ -12,6 +12,10 @@ import frc.robot.commands.MoveTower;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.Spark;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -20,34 +24,24 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Tower extends Subsystem {
   
 
-  public Spark spark;
+  public VictorSPX tower;
   public DigitalInput limitUp;
   public DigitalInput limitDown;
 
 
   public Tower(){
-  
-    spark = new Spark(RobotMap.ELEVATOR);
+    tower = new VictorSPX(RobotMap.ELEVATOR);
 
-    limitUp = new DigitalInput(RobotMap.LIMIT_TOWER_UP);
-    limitDown = new DigitalInput(RobotMap.LIMIT_TOWER_DOWN);
-
+    //limitUp = new DigitalInput(RobotMap.LIMIT_TOWER_UP);
+    //limitDown = new DigitalInput(RobotMap.LIMIT_TOWER_DOWN);
   }
 
-  
   public void move(double vel){
-    //corrigir
-    if (false) { 
-      stop();
-    } else {
-      double potencia = vel;
-      spark.set(potencia);
-    }
-    
+    tower.set(ControlMode.PercentOutput, vel);
   }
   
   public void stop() {
-    spark.set(0);
+    tower.set(ControlMode.PercentOutput, 0);
   }
 
 

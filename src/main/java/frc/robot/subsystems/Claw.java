@@ -10,105 +10,76 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.MoveClaw;
 
-/**
- * Add your docs here.
- */
+
 public class Claw extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  /**
-   * Motor that controls cargo intake.
-   */
-  private VictorSP victorCargo;
-  private VictorSP victorControl;
+  private VictorSPX victorCargo;
+  private Spark victorControl;
+  public DigitalInput limitUp;
+  public DigitalInput limitDown;
+  private final double cargoForce = 0.85;
 
-  /**
-   * Solenoid that controls hatch panel intake.
-   */
-  //private DoubleSolenoid solenoidHatch; 
 
-  //private DigitalInput limitCargo = RobotMap.Sensors.Claw.CargoLimit;
-  //private DigitalInput limitHatchPanel = RobotMap.Sensors.Claw.HatchPanelLimit;
-
-  private boolean hatchIsEnabled = true;
-  private boolean cargoIsEnabled;
-  
   @Override
   public void initDefaultCommand() {
-
-    setDefaultCommand(new MoveClaw());
 
   }
 
   public Claw() { 
-    victorCargo = new VictorSP(RobotMap.CLAW_CARGO);    
-    //solenoidHatch = RobotMap.Controllers.Claw.solenoidHatch;
-    //victorControl    = new VictorSP(RobotMap.CLAW_CONTROL);
+    victorCargo = new VictorSPX(RobotMap.CLAW_CARGO);    
+    victorControl = new Spark(RobotMap.CLAW_CONTROL);
+
+    limitUp = new DigitalInput(RobotMap.LIMIT_CLAW_UP);
+    limitDown = new DigitalInput(RobotMap.LIMIT_CLAW_DOWN);
   }
+  
 
   public void Move(double value){
     
-    //updateLimits();
-    //victorControl.set(value);
+    double power; 
+    if((limitUp.get() && value > 0 )|| (limitDown.get() && value < 0)){
+      power = 0;
+    }
+    else power = value;
 
-    /*s
-    if(value < 0 && !cargoIsEnabled){
-      victorControl.set(ControlMode.PercentOutput, value);
-    }
-    else if(value > 0 && !hatchIsEnabled){
-      victorControl.set(ControlMode.PercentOutput, value);
-    }
-    else {
-      victorControl.set(ControlMode.PercentOutput, 0);
-    }
-    */
+    victorControl.set(power);
   }
 
-  public void pullCargo(){
-    //updateLimits();
+  public void StopClaw (){
+    victorControl.set(0);
+  }
 
-     victorCargo.set(0.75); // Anything higher than 0.5 may break our mechanism.
-    
+  public void ClawUp (){
+    if (!limitUp.get()){
+      victorControl.set(0.8);
+    }
+    else StopClaw();
+  }
+
+  public void ClawDown (){
+    if (!limitDown.get()){
+      victorControl.set(-0.45);
+    }
+    else StopClaw();
+  }
+  
+
+  public void pullCargo(){
+    victorCargo.set(ControlMode.PercentOutput, cargoForce); 
   }
 
   public void dropCargo(){
-    //updateLimits();
-
-     victorCargo.set(-0.8); // Anything higher than 0.5 may break our mechanism.
-    
+    victorCargo.set(ControlMode.PercentOutput, -cargoForce); 
   }
 
   public void stopCargo(){
-     victorCargo.set(0.0); 
-  }
-
-  public void ExtendHatch(){
-    //updateLimits();
-
-    //if(hatchIsEnabled){ 
-      //solenoidHatch.set(Value.kForward); // This method raises the piston.
-    //}
-  }
-
-  public void RecallHatch(){
-    //updateLimits();
-
-    //if(hatchIsEnabled){
-      //solenoidHatch.set(Value.kReverse); // This method descends the piston.
-    //}
-  }
-
-  private void updateLimits(){
-    //hatchIsEnabled = limitHatchPanel.get();
-    //cargoIsEnabled = limitCargo.get();
+     victorCargo.set(ControlMode.PercentOutput, 0.0); 
   }
 
 }

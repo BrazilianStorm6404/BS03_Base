@@ -13,3 +13,6 @@
 *.MF
 .gradle/5.0/fileHashes/fileHashes.bin
 *.lock
+*.bin
+*.bin
+.gradle/5.0/fileHashes/fileHashes.bin

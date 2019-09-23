@@ -14,9 +14,10 @@ public class OI {
     // We named the variables based on the xbox controller buttons
     Button buttonA = new JoystickButton(driverController, 1);
     Button buttonB = new JoystickButton(driverController, 2);
-    Button buttonX = new JoystickButton(driverController, 3);
-    Button buttonY = new JoystickButton(driverController, 4); 
-    
+    public Button buttonX = new JoystickButton(driverController, 3);
+    Button buttonY = new JoystickButton(driverController, 4);
+    Button buttonLB = new JoystickButton(driverController, 6);
+    Button buttonRB = new JoystickButton(driverController, 5);
     private static int angle = 45;
 
     public static void setAngle(int angle) {
@@ -27,20 +28,19 @@ public class OI {
         return OI.angle;
     }
 
-    /**
-     * <p> Sets the {@link Button} Config and what method it activates in what state </p>
-     */
     public OI(){
-
-        
-        //Garra
-        //buttonY.whileHeld(new ForwardRelay());
-        //buttonY.whenReleased(new BackwardsRelay());
-        
         buttonB.whileHeld(new DropCargo()); 
         buttonB.whenReleased(new StopCargo());
 
         buttonA.whileHeld(new PullCargo());  
         buttonA.whenReleased(new StopCargo());
+
+        buttonLB.whileHeld(new ClawUp());
+        buttonLB.whenReleased(new StopClaw());
+
+        buttonRB.whileHeld(new ClawDown());
+        buttonRB.whenReleased(new StopClaw());
+
+        buttonY.whenPressed(new GrabHatch());
     }
 }
