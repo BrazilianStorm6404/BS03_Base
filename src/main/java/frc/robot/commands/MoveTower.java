@@ -13,18 +13,28 @@ import frc.robot.Robot;
 
 public class MoveTower extends Command {
 
+  /**
+   * Default constructor
+   * Construtor padrão
+   */
   public MoveTower() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
     requires(Robot.m_tower);
   }
 
-  // Called just before this Command runs the first time
+  /**
+   * Called when the Command is initialized for the first time.
+   * Chamado quando o comando é inicializado pela primeira vez.
+   */
   @Override
   protected void initialize() {
   }
 
-  // Called repeatedly when this Command is scheduled to run
+  /**
+   * Chamado repetidamente enquanto o comando é executado. Aqui, ele serve para realizar o movimento da
+   * garra e disponibizá-lo para análise na Shuffleboard.
+   * Called repeatedly while the command is running. Here, it realizes the claw movement and puts it up
+   * for analysis in the Shuffleboard.
+   */
   @Override
   protected void execute() {
     double vel = Robot.m_oi.driverController.getRawAxis(2)-Robot.m_oi.driverController.getRawAxis(3);
@@ -32,24 +42,32 @@ public class MoveTower extends Command {
     SmartDashboard.putBoolean("Subindo Garra",vel > 0);
     SmartDashboard.putBoolean("Descendo Garra",vel < 0);
 
-    vel +=0.09;
+    vel +=0.07;
 
     Robot.m_tower.move(vel);
   }
 
-  // Make this return true when this Command no longer needs to run execute()
+  /**
+   * Verifica se o comando já terminou ou não.
+   * Verifies if the command is or not finished.
+   */
   @Override
   protected boolean isFinished() {
     return false;
   }
 
-  // Called once after isFinished returns true
+  /**
+   * Chamado quando a função {@link isFinished()} retorna verdadeiro.
+   * Called when the function {@link isFinished()} returns true.
+   */
   @Override
   protected void end() {
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
+  /**
+   * Chamado quando outro comando que requer os mesmos subsistemas é requisitado.
+   * Called when another command that needs the same subsystems is scheduled.
+   */
   @Override
   protected void interrupted() {
   }

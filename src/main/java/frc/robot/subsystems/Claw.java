@@ -13,8 +13,12 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-
-
+ 
+/**
+ * Claw Subsystem. Includes all action methods (moving claws up and dow, deploying cargos, etc.)
+ * Subsistemas de Garra. Inclui todos os métodos de ação (movimento da garra, deploy das cargos, entre
+ * outros.)
+ */
 public class Claw extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
@@ -25,12 +29,15 @@ public class Claw extends Subsystem {
   public DigitalInput limitDown;
   private final double cargoForce = 0.85;
 
-
   @Override
   public void initDefaultCommand() {
 
   }
 
+  /**
+   * Construtor padrão da garra
+   * Default claw constructor.
+   */
   public Claw() { 
     victorCargo = new VictorSPX(RobotMap.CLAW_CARGO);    
     victorControl = new Spark(RobotMap.CLAW_CONTROL);
@@ -39,10 +46,18 @@ public class Claw extends Subsystem {
     limitDown = new DigitalInput(RobotMap.LIMIT_CLAW_DOWN);
   }
 
+  /**
+   * Função para interromper o movimento do motor da garra.
+   * Function that stops the claw movement.
+   */
   public void StopClaw (){
     victorControl.set(0);
   }
 
+  /**
+   * Função para elevar a garra.
+   * Function to make the claw move up.
+   */
   public void ClawUp (){
     if (!limitUp.get()){
       victorControl.set(0.8);
@@ -50,6 +65,10 @@ public class Claw extends Subsystem {
     else StopClaw();
   }
 
+  /**
+   * Função para descer a garra.
+   * Function to make the claw move down.
+   */
   public void ClawDown (){
     if (!limitDown.get()){
       victorControl.set(-0.45);
@@ -58,14 +77,26 @@ public class Claw extends Subsystem {
   }
   
 
+  /**
+   * Função para puxar a cargo.
+   * Function to pull cargos.
+   */
   public void pullCargo(){
     victorCargo.set(ControlMode.PercentOutput, cargoForce); 
   }
 
+  /**
+   * Função para soltar a cargo.
+   * Function to drop cargos.
+   */
   public void dropCargo(){
     victorCargo.set(ControlMode.PercentOutput, -cargoForce); 
   }
 
+  /**
+   * Função para parar o motor dos roletes.
+   * Function to stop the claw intake system.
+   */
   public void stopCargo(){
      victorCargo.set(ControlMode.PercentOutput, 0.0); 
   }

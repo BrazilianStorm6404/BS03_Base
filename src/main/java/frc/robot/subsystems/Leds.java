@@ -13,13 +13,20 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
 /**
- * Add your docs here.
+ * Class to deal with the decoration LEDs for the robot.
+ * Classe para lidar com os LEDs de decoração do robô.
  */
 public class Leds extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-  DigitalOutput fitaVerde;
-  DigitalOutput fitaBranca;
+  /**
+   * {@link DigitalOutput} para a fita de LED verde.
+   * {@link DigitalOutput} for the green LED tape.
+   */
+  public DigitalOutput fitaVerde;
+  /**
+   * {@link DigitalOutput} para a fita de LED verde.
+   * {@link DigitalOutput} for the green LED tape.
+   */
+  public DigitalOutput fitaBranca;
 
   @Override
   public void initDefaultCommand() {
@@ -27,6 +34,10 @@ public class Leds extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 
+  /**
+   * Construtor padrão.
+   * Default constructor.
+   */
   public Leds(){
     fitaVerde = new DigitalOutput(RobotMap.GREEN_LED_TAPE);
     fitaBranca = new DigitalOutput(RobotMap.WHITE_LED_TAPE);
