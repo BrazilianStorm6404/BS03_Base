@@ -5,16 +5,17 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.Claw;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Tower;
+
+import frc.robot.subsystems.*;
 
 
 public class Robot extends TimedRobot {
+
   public static Drivetrain m_drive;
   public static Claw m_claw;
   public static Tower m_tower;
   public static OI m_oi;
+  public static Leds m_Leds;
 
   @Override
   public void robotInit() {
@@ -22,7 +23,11 @@ public class Robot extends TimedRobot {
     m_drive = new Drivetrain();
     m_tower = new Tower();
     m_claw = new Claw();
+    m_Leds = new Leds();    
+    //Deve sempre ser o último, possível problema de inicialização
     m_oi = new OI();
+
+
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
     UsbCamera camera2 = CameraServer.getInstance().startAutomaticCapture(1);
     camera.setResolution(640, 320);

@@ -55,4 +55,9 @@ public class RobotMap {
 
   public static final int LIMIT_CLAW_UP = 0;
 
+  
+  public static final int WHITE_LED_TAPE = 8;
+
+  public static final int GREEN_LED_TAPE = 9; 
+
 }
