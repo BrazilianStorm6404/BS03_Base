@@ -14,10 +14,21 @@ public class OI {
     // We named the variables based on the xbox controller buttons
     Button buttonA = new JoystickButton(driverController, 1);
     Button buttonB = new JoystickButton(driverController, 2);
-    public Button buttonX = new JoystickButton(driverController, 3);
     Button buttonY = new JoystickButton(driverController, 4);
     Button buttonLB = new JoystickButton(driverController, 6);
     Button buttonRB = new JoystickButton(driverController, 5);
+
+    /*INICIO DO CODIGO INSTAVEL*/
+    //verificar a correspondencia do números
+    Button buttonStart = new JoystickButton(driverController, 7);
+    Button buttonBack = new JoystickButton(driverController, 8);
+    /*FIM DO CODIGO INSTAVEL*/
+
+    //publico não é o padrão, alterar 
+    public Button buttonX = new JoystickButton(driverController, 3);
+
+
+     //ainda é usado? rever
     private static int angle = 45;
 
     public static void setAngle(int angle) {
@@ -29,6 +40,10 @@ public class OI {
     }
 
     public OI(){
+        
+        buttonBack.whenPressed(new SwitchWhiteTape());
+        buttonStart.whenPressed(new SwitchGreenTape());
+
         buttonB.whileHeld(new DropCargo()); 
         buttonB.whenReleased(new StopCargo());
 

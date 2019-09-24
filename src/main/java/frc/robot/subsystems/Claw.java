@@ -38,18 +38,6 @@ public class Claw extends Subsystem {
     limitUp = new DigitalInput(RobotMap.LIMIT_CLAW_UP);
     limitDown = new DigitalInput(RobotMap.LIMIT_CLAW_DOWN);
   }
-  
-
-  public void Move(double value){
-    
-    double power; 
-    if((limitUp.get() && value > 0 )|| (limitDown.get() && value < 0)){
-      power = 0;
-    }
-    else power = value;
-
-    victorControl.set(power);
-  }
 
   public void StopClaw (){
     victorControl.set(0);
