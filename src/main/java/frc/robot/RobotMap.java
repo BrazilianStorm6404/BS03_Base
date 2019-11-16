@@ -62,12 +62,11 @@ public class RobotMap {
    * Tower limit's
    * Portas fim de curso da Limit
    */
-  /*
-  public static final int LIMIT_TOWER_UP = 8;
+  
+  public static final int LIMIT_TOWER_UP = 6;
 
-  public static final int LIMIT_TOWER_DOWN = 9;
-  */
-
+  public static final int LIMIT_TOWER_DOWN =7;
+  
   /**
    * Claw limit's
    * Portas das chaves fim de curso da garra.
@@ -77,8 +76,8 @@ public class RobotMap {
   public static final int LIMIT_CLAW_UP = 0;
 
   
-  public static final int WHITE_LED_TAPE = 8;
+  public static final int WHITE_LED_TAPE = 0;
 
-  public static final int GREEN_LED_TAPE = 9; 
+  public static final int GREEN_LED_TAPE = 1; 
 
 }

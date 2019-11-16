@@ -40,7 +40,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("limitUp",m_claw.limitUp.get());
     SmartDashboard.putBoolean("Led Verde", m_Leds.fitaVerde.get());
     SmartDashboard.putBoolean("Led Branco", m_Leds.fitaBranca.get());
-  
   }
 
   @Override

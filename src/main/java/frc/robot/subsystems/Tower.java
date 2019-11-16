@@ -29,8 +29,8 @@ public class Tower extends Subsystem {
   public Tower(){
     tower = new VictorSPX(RobotMap.ELEVATOR);
 
-    //limitUp = new DigitalInput(RobotMap.LIMIT_TOWER_UP);
-    //limitDown = new DigitalInput(RobotMap.LIMIT_TOWER_DOWN);
+    limitUp = new DigitalInput(RobotMap.LIMIT_TOWER_UP);
+    limitDown = new DigitalInput(RobotMap.LIMIT_TOWER_DOWN);
   }
 
   public void move(double vel){

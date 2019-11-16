@@ -70,10 +70,7 @@ public class Claw extends Subsystem {
    * Function to make the claw move down.
    */
   public void ClawDown (){
-    if (!limitDown.get()){
-      victorControl.set(-0.45);
-    }
-    else StopClaw();
+    victorControl.set(-0.45);
   }
   
 

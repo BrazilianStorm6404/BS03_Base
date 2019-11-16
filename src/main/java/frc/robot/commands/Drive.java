@@ -47,7 +47,7 @@ public class Drive extends Command {
     SmartDashboard.putBoolean("Marcha",Robot.m_oi.buttonX.get());
 
     if (Robot.m_oi.buttonX.get()) {
-      Robot.m_drive.arcadeDrive(mover*0.5,girar*0.5);
+      Robot.m_drive.arcadeDrive(mover*0.6,girar*0.6);
     } else {
       Robot.m_drive.arcadeDrive(mover,girar);
     }

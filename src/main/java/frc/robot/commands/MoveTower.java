@@ -37,7 +37,7 @@ public class MoveTower extends Command {
    */
   @Override
   protected void execute() {
-    double vel = Robot.m_oi.driverController.getRawAxis(2)-Robot.m_oi.driverController.getRawAxis(3);
+    double vel = Robot.m_oi.driverController.getRawAxis(3)-Robot.m_oi.driverController.getRawAxis(2);
     
     SmartDashboard.putBoolean("Subindo Garra",vel > 0);
     SmartDashboard.putBoolean("Descendo Garra",vel < 0);
