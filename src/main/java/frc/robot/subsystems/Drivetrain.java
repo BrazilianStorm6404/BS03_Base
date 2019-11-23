@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.SPI;
+
 import frc.robot.commands.Drive;
 import frc.robot.RobotMap;
 
@@ -29,8 +32,8 @@ import frc.robot.RobotMap;
 public class Drivetrain extends PIDSubsystem {
 
   private DifferentialDrive drive;
-  AHRS navX;
-  private double pidOutput;
+  public AHRS navX;
+  public double pidOutput;
 
   public Drivetrain() {
      
@@ -50,6 +53,9 @@ public class Drivetrain extends PIDSubsystem {
     SpeedControllerGroup Right = new SpeedControllerGroup(BackRight, FrontRight);
     
     drive = new DifferentialDrive(Left,Right); 
+
+    navX = new AHRS(SPI.Port.kMXP); 
+    navX.reset();
 
     // These are the PID configs. DONT FORGET TO ENABLE() IT.
     setInputRange(-180f,180f);
@@ -77,6 +83,9 @@ public class Drivetrain extends PIDSubsystem {
    *  @see DifferentialDrive
    */
   public void arcadeDrive(double move, double spin){
+    SmartDashboard.putNumber("DriveTrain-Move",move);
+    SmartDashboard.putNumber("DriveTrain-Spin",spin);
+    SmartDashboard.putNumber("NavX-Yaw", navX.getYaw());
     drive.arcadeDrive(-move, spin); 
   }
   
@@ -91,7 +100,7 @@ public class Drivetrain extends PIDSubsystem {
    */
   @Override
   protected double returnPIDInput() { 
-    return 0;
+    return navX.getYaw();
     // This is the input for the PID class. We are using the navx's Yaw.
   }
 

@@ -71,9 +71,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit(){
+    Robot.m_drive.navX.reset();
   }
 
   @Override
   public void testPeriodic() {
+    //Deploing autonomus tests here
+    Robot.m_drive.arcadeDrive(-0.6, Robot.m_drive.pidOutput);
   }
 }
