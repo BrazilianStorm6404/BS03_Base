@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
 
 import frc.robot.commands.Drive;
@@ -56,6 +57,13 @@ public class Drivetrain extends PIDSubsystem {
 
     navX = new AHRS(SPI.Port.kMXP); 
     navX.reset();
+
+    Encoder enc = new Encoder(RobotMap.ENCODER_A, RobotMap.ENCODER_B, false, Encoder.EncodingType.k4X);
+    enc.setMaxPeriod(.1);
+    enc.setMinRate(10);
+    enc.setDistancePerPulse(.4/.256);
+    enc.setReverseDirection(true);
+    enc.setSamplesToAverage(7);
 
     // These are the PID configs. DONT FORGET TO ENABLE() IT.
     setInputRange(-180f,180f);

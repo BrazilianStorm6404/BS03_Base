@@ -80,4 +80,7 @@ public class RobotMap {
 
   public static final int GREEN_LED_TAPE = 1; 
 
+  public static final int ENCODER_A = 0;
+
+  public static final int ENCODER_B = 1;
 }
