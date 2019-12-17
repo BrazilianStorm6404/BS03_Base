@@ -40,22 +40,6 @@ public class OI {
     }
 
     public OI(){
-        
-        buttonBack.whenPressed(new StraightDrive());
-        buttonStart.whenPressed(new AutonomusDrive());
-
-        buttonB.whileHeld(new DropCargo()); 
-        buttonB.whenReleased(new StopCargo());
-
-        buttonA.whileHeld(new PullCargo());  
-        buttonA.whenReleased(new StopCargo());
-
-        buttonLB.whileHeld(new ClawUp());
-        buttonLB.whenReleased(new StopClaw());
-
-        buttonRB.whileHeld(new ClawDown());
-        buttonRB.whenReleased(new StopClaw());
-
-        buttonY.whenPressed(new GrabHatch());
+      
     }
 }

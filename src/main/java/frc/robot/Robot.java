@@ -15,19 +15,13 @@ import frc.robot.subsystems.*;
 public class Robot extends TimedRobot {
 
   public static Drivetrain m_drive;
-  public static Claw m_claw;
-  public static Tower m_tower;
   public static OI m_oi;
-  public static Leds m_Leds;
   public static ShuffleboardTab tab_autonomo;
   public static NetworkTableEntry entryAngulo, entryDistance, entryTolerance;
   @Override
   public void robotInit() {
 
     m_drive = new Drivetrain();
-    m_tower = new Tower();
-    m_claw = new Claw();
-    m_Leds = new Leds();    
     //Deve sempre ser o último, possível problema de inicialização
     m_oi = new OI();
 
@@ -43,10 +37,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putBoolean("limitDown",m_claw.limitDown.get());
-    SmartDashboard.putBoolean("limitUp",m_claw.limitUp.get());
-    SmartDashboard.putBoolean("Led Verde", m_Leds.fitaVerde.get());
-    SmartDashboard.putBoolean("Led Branco", m_Leds.fitaBranca.get());
   }
 
   @Override

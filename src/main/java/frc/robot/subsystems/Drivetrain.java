@@ -14,9 +14,10 @@ import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.PWMSpeedController;
 import edu.wpi.first.wpilibj.SPI;
 
 import frc.robot.commands.Drive;
@@ -35,7 +36,6 @@ public class Drivetrain extends PIDSubsystem {
   private DifferentialDrive drive;
   public AHRS navX;
   public double pidOutput;
-  public Encoder enc;
 
   public Drivetrain() {
      
@@ -48,8 +48,8 @@ public class Drivetrain extends PIDSubsystem {
    
     Spark BackLeft = new Spark(RobotMap.MOTOR_BACK_LEFT);
     Spark FrontLeft = new Spark(RobotMap.MOTOR_FRONT_LEFT);
-    Spark FrontRight = new Spark(RobotMap.MOTOR_FRONT_RIGHT);
-    Spark BackRight = new Spark(RobotMap.MOTOR_BACK_RIGHT);
+    VictorSP FrontRight = new VictorSP(RobotMap.MOTOR_FRONT_RIGHT);
+    Jaguar BackRight = new Jaguar(RobotMap.MOTOR_BACK_RIGHT);
 
     SpeedControllerGroup Left = new SpeedControllerGroup(BackLeft, FrontLeft);
     SpeedControllerGroup Right = new SpeedControllerGroup(BackRight, FrontRight);
@@ -59,30 +59,6 @@ public class Drivetrain extends PIDSubsystem {
     navX = new AHRS(SPI.Port.kMXP); 
     navX.reset();
 
-    enc = new Encoder(RobotMap.ENCODER_A, RobotMap.ENCODER_B, false, Encoder.EncodingType.k4X);
-
-    /* 
-    Define o período máximo para a detecção de interrompção.
-    Define o valor que representa o período máximo do codificador antes de assumir que
-    o dispositivo conectado está parado. Esse tempo limite permite que os usuários determinem
-    se as rodas ou outro eixo pararam de girar. 
-    */
-    enc.setMaxPeriod(1);
-    
-    /* 
-    Set the minimum rate of the device before the hardware reports it stopped.
-    The minimum rate. The units are in distance per second as scaled by the value from 
-    */
-    enc.setMinRate(0.8);
-
-    // distancia percorrida para cada pulso do encoder 1 pulso = 16,66 cm no autonomo
-    enc.setDistancePerPulse(16.66);
-
-    // direção do encoder
-    enc.setReverseDirection(false);
-    // quantidade de teste para média de erro
-    enc.setSamplesToAverage(3);
-
     // These are the PID configs. DONT FORGET TO ENABLE() IT.
     setInputRange(-180f,180f);
     setOutputRange(-0.5f, 0.5f); 
@@ -91,7 +67,6 @@ public class Drivetrain extends PIDSubsystem {
     enable();    
    
   }
-
 
   @Override
   public void initDefaultCommand() {
@@ -113,10 +88,6 @@ public class Drivetrain extends PIDSubsystem {
     SmartDashboard.putNumber("DriveTrain-Move",move);
     SmartDashboard.putNumber("DriveTrain-Spin",spin);
     SmartDashboard.putNumber("NavX-Yaw", navX.getYaw());
-    SmartDashboard.putNumber("Encoder-Distance", enc.getDistance());
-    SmartDashboard.putNumber("Encoder-Pulses", enc.get());  
-    if(-move < 0) enc.setReverseDirection(true);
-    else if(-move >= 0) enc.setReverseDirection(false);  
     drive.arcadeDrive(-move, spin); 
   }
   
@@ -132,7 +103,6 @@ public class Drivetrain extends PIDSubsystem {
   @Override
   protected double returnPIDInput() { 
     return navX.getYaw();
-    // This is the input for the PID class. We are using the navx's Yaw.
   }
 
   /**
