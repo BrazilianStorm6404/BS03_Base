@@ -20,7 +20,7 @@ public class Robot extends TimedRobot {
   public static OI m_oi;
   public static Leds m_Leds;
   public static ShuffleboardTab tab_autonomo;
-  public static NetworkTableEntry entryAngulo, entryDistance;
+  public static NetworkTableEntry entryAngulo, entryDistance, entryTolerance;
   @Override
   public void robotInit() {
 
@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
     tab_autonomo = Shuffleboard.getTab("Autonomo");
     entryAngulo = tab_autonomo.add("Angulo", 0).getEntry();
     entryDistance = tab_autonomo.add("Distance", 0).getEntry();
-
+    entryTolerance = tab_autonomo.add("Tolerance", 0).getEntry();
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
     UsbCamera camera2 = CameraServer.getInstance().startAutomaticCapture(1);
     camera.setResolution(640, 320);

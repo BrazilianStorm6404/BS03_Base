@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------*/
+
 /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
@@ -35,6 +35,7 @@ public class Drivetrain extends PIDSubsystem {
   private DifferentialDrive drive;
   public AHRS navX;
   public double pidOutput;
+  public Encoder enc;
 
   public Drivetrain() {
      
@@ -58,12 +59,29 @@ public class Drivetrain extends PIDSubsystem {
     navX = new AHRS(SPI.Port.kMXP); 
     navX.reset();
 
-    Encoder enc = new Encoder(RobotMap.ENCODER_A, RobotMap.ENCODER_B, false, Encoder.EncodingType.k4X);
-    enc.setMaxPeriod(.1);
-    enc.setMinRate(10);
-    enc.setDistancePerPulse(.4/.256);
-    enc.setReverseDirection(true);
-    enc.setSamplesToAverage(7);
+    enc = new Encoder(RobotMap.ENCODER_A, RobotMap.ENCODER_B, false, Encoder.EncodingType.k4X);
+
+    /* 
+    Define o período máximo para a detecção de interrompção.
+    Define o valor que representa o período máximo do codificador antes de assumir que
+    o dispositivo conectado está parado. Esse tempo limite permite que os usuários determinem
+    se as rodas ou outro eixo pararam de girar. 
+    */
+    enc.setMaxPeriod(1);
+    
+    /* 
+    Set the minimum rate of the device before the hardware reports it stopped.
+    The minimum rate. The units are in distance per second as scaled by the value from 
+    */
+    enc.setMinRate(0.8);
+
+    // distancia percorrida para cada pulso do encoder 1 pulso = 16,66 cm no autonomo
+    enc.setDistancePerPulse(16.66);
+
+    // direção do encoder
+    enc.setReverseDirection(false);
+    // quantidade de teste para média de erro
+    enc.setSamplesToAverage(3);
 
     // These are the PID configs. DONT FORGET TO ENABLE() IT.
     setInputRange(-180f,180f);
@@ -73,6 +91,7 @@ public class Drivetrain extends PIDSubsystem {
     enable();    
    
   }
+
 
   @Override
   public void initDefaultCommand() {
@@ -94,6 +113,10 @@ public class Drivetrain extends PIDSubsystem {
     SmartDashboard.putNumber("DriveTrain-Move",move);
     SmartDashboard.putNumber("DriveTrain-Spin",spin);
     SmartDashboard.putNumber("NavX-Yaw", navX.getYaw());
+    SmartDashboard.putNumber("Encoder-Distance", enc.getDistance());
+    SmartDashboard.putNumber("Encoder-Pulses", enc.get());  
+    if(-move < 0) enc.setReverseDirection(true);
+    else if(-move >= 0) enc.setReverseDirection(false);  
     drive.arcadeDrive(-move, spin); 
   }
   
