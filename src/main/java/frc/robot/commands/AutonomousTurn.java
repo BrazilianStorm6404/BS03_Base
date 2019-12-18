@@ -10,19 +10,19 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class AutonomusDrive extends Command {
+public class AutonomousTurn extends Command {
   double sp;
-  public AutonomusDrive() {
+  public AutonomousTurn(double setpoint) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.m_drive);
+    sp = setpoint;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     Robot.m_drive.navX.reset();
-    sp = Robot.entryAngulo.getDouble(0);
     Robot.m_drive.setSetpoint(sp);
   }
 

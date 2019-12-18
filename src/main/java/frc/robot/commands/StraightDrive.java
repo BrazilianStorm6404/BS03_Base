@@ -12,11 +12,12 @@ import frc.robot.Robot;
 
 public class StraightDrive extends Command {
   double dist;
-  double tolerance;
+  double tolerance = 1;
   // velocidade do autonomo
   double vel = 0.7;
-  public StraightDrive() {
+  public StraightDrive(double distance) {
     requires(Robot.m_drive);
+    dist = distance;
   }
 
   // Called just before this Command runs the first time
@@ -24,9 +25,6 @@ public class StraightDrive extends Command {
   protected void initialize() {
     Robot.m_drive.enc.reset();
     Robot.m_drive.navX.reset();
-
-    dist = Robot.entryDistance.getDouble(0);
-    tolerance = Robot.entryTolerance.getDouble(0);
   }
 
   // Called repeatedly when this Command is scheduled to run

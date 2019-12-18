@@ -40,9 +40,6 @@ public class OI {
     }
 
     public OI(){
-        
-        buttonBack.whenPressed(new StraightDrive());
-        buttonStart.whenPressed(new AutonomusDrive());
 
         buttonB.whileHeld(new DropCargo()); 
         buttonB.whenReleased(new StopCargo());
