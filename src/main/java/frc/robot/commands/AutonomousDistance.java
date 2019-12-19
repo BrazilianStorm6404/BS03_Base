@@ -10,12 +10,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class StraightDrive extends Command {
+public class AutonomousDistance extends Command {
   double dist;
   double tolerance = 1;
   // velocidade do autonomo
   double vel = 0.7;
-  public StraightDrive(double distance) {
+  public AutonomousDistance(double distance) {
     requires(Robot.m_drive);
     dist = distance;
   }

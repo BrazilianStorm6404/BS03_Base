@@ -14,16 +14,28 @@ public class AutonomousRoutine extends CommandGroup {
    * Add your docs here.
    */
   public AutonomousRoutine() {
-    // Add Commands here:
-    // e.g. addSequential(new Command1());
-    // addSequential(new Command2());
-    // these will run in order.
-    addSequential(new StraightDrive(400));
-    addSequential(new AutonomousTurn(60));
-    addSequential(new StraightDrive(400));
-    addSequential(new AutonomousTurn(60));
-    addSequential(new StraightDrive(400));
-    addSequential(new AutonomousTurn(60));
+    
+    int Alfa = 90;
+    int A=200,B=300,C=400;
+    
+    //Primeira Parte
+    addSequential(new StraightDrive(A));
+    addSequential(new AutonomousTurn(Alfa));
+    addSequential(new StraightDrive(B));
+    addSequential(new AutonomousTurn(-Alfa));
+    addSequential(new StraightDrive(C));
+    addSequential(new AutonomousTurn(90));
+
+    //Segunda Parte
+
+    //Terceira Parte
+    addSequential(new StraightDrive(A));
+    addSequential(new AutonomousTurn(Alfa));
+    addSequential(new StraightDrive(B));
+    addSequential(new AutonomousTurn(-Alfa));
+    addSequential(new StraightDrive(C));
+    addSequential(new AutonomousTurn(90));
+
     // To run multiple commands at the same time,
     // use addParallel()
     // e.g. addParallel(new Command1());
