@@ -43,7 +43,6 @@ public class MoveTower extends Command {
     SmartDashboard.putBoolean("Descendo Garra",vel < 0);
 
     vel +=0.07;
-
     Robot.m_tower.move(vel);
   }
 

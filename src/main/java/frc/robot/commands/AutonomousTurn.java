@@ -13,8 +13,6 @@ import frc.robot.Robot;
 public class AutonomousTurn extends Command {
   double sp;
   public AutonomousTurn(double setpoint) {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
     requires(Robot.m_drive);
     sp = setpoint;
   }
@@ -47,6 +45,7 @@ public class AutonomousTurn extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.m_drive.setSetpoint(0);
   }
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run

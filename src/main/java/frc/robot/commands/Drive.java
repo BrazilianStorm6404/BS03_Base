@@ -9,7 +9,6 @@ package frc.robot.commands;
 
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 /**
@@ -43,8 +42,6 @@ public class Drive extends Command {
   protected void execute() {
     mover = Robot.m_oi.driverController.getY(); 
     girar = Robot.m_oi.driverController.getX();
-
-    SmartDashboard.putBoolean("Marcha",Robot.m_oi.buttonX.get());
 
     if (Robot.m_oi.buttonX.get()) {
       Robot.m_drive.arcadeDrive(mover*0.6,girar*0.6);

@@ -19,22 +19,16 @@ public class AutonomousRoutine extends CommandGroup {
     int A=200,B=300,C=400;
     
     //Primeira Parte
-    addSequential(new StraightDrive(A));
+    addSequential(new AutonomousDistance(A));
     addSequential(new AutonomousTurn(Alfa));
-    addSequential(new StraightDrive(B));
+    addSequential(new AutonomousDistance(B));
     addSequential(new AutonomousTurn(-Alfa));
-    addSequential(new StraightDrive(C));
+    addSequential(new AutonomousDistance(C));
     addSequential(new AutonomousTurn(90));
 
     //Segunda Parte
 
     //Terceira Parte
-    addSequential(new StraightDrive(A));
-    addSequential(new AutonomousTurn(Alfa));
-    addSequential(new StraightDrive(B));
-    addSequential(new AutonomousTurn(-Alfa));
-    addSequential(new StraightDrive(C));
-    addSequential(new AutonomousTurn(90));
 
     // To run multiple commands at the same time,
     // use addParallel()

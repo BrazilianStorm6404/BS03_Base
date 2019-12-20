@@ -110,11 +110,8 @@ public class Drivetrain extends PIDSubsystem {
    *  @see DifferentialDrive
    */
   public void arcadeDrive(double move, double spin){
-    SmartDashboard.putNumber("DriveTrain-Move",move);
-    SmartDashboard.putNumber("DriveTrain-Spin",spin);
     SmartDashboard.putNumber("NavX-Yaw", navX.getYaw());
     SmartDashboard.putNumber("Encoder-Distance", enc.getDistance());
-    SmartDashboard.putNumber("Encoder-Pulses", enc.get());  
     if(-move < 0) enc.setReverseDirection(true);
     else if(-move >= 0) enc.setReverseDirection(false);  
     drive.arcadeDrive(-move, spin); 
