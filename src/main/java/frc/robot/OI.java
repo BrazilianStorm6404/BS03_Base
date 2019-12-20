@@ -18,28 +18,10 @@ public class OI {
     Button buttonLB = new JoystickButton(driverController, 6);
     Button buttonRB = new JoystickButton(driverController, 5);
 
-    /*INICIO DO CODIGO INSTAVEL*/
-    //verificar a correspondencia do números
-    Button buttonStart = new JoystickButton(driverController, 7);
-    Button buttonBack = new JoystickButton(driverController, 8);
-    /*FIM DO CODIGO INSTAVEL*/
-
     //publico não é o padrão, alterar 
     public Button buttonX = new JoystickButton(driverController, 3);
 
-
-     //ainda é usado? rever
-    private static int angle = 45;
-
-    public static void setAngle(int angle) {
-        OI.angle = angle;
-    } 
-
-    public static int getAngle(){
-        return OI.angle;
-    }
-
     public OI(){
-      
+        buttonB.whileActive(new ShooterShoot());      
     }
 }

@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.subsystems.*;
 
@@ -16,11 +15,13 @@ public class Robot extends TimedRobot {
 
   public static Drivetrain m_drive;
   public static OI m_oi;
+  public static Shooter m_shooter;
   public static ShuffleboardTab tab_autonomo;
   public static NetworkTableEntry entryAngulo, entryDistance, entryTolerance;
   @Override
   public void robotInit() {
 
+    m_shooter = new Shooter();
     m_drive = new Drivetrain();
     //Deve sempre ser o último, possível problema de inicialização
     m_oi = new OI();
@@ -29,10 +30,12 @@ public class Robot extends TimedRobot {
     entryAngulo = tab_autonomo.add("Angulo", 0).getEntry();
     entryDistance = tab_autonomo.add("Distance", 0).getEntry();
     entryTolerance = tab_autonomo.add("Tolerance", 0).getEntry();
+    
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
-    UsbCamera camera2 = CameraServer.getInstance().startAutomaticCapture(1);
+    //UsbCamera camera2 = CameraServer.getInstance().startAutomaticCapture(1);
     camera.setResolution(640, 320);
-    camera2.setResolution(640, 320);
+    //camera2.setResolution(640, 320);
+    
   }
 
   @Override
@@ -68,12 +71,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit(){
-    Robot.m_drive.navX.reset();
   }
 
   @Override
   public void testPeriodic() {
-    //Deploing autonomus tests here
-    Robot.m_drive.arcadeDrive(-0.6, Robot.m_drive.pidOutput);
   }
 }
