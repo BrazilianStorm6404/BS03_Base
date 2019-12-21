@@ -13,19 +13,20 @@ import frc.robot.Robot;
 /**
  * Add your docs here.
  */
-public class ShooterShoot extends InstantCommand {
+public class ShooterStopShooting extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public ShooterShoot() {
+  public ShooterStopShooting() {
     super();
-    requires(Robot.m_shooter);
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
   }
 
   // Called once when the command executes
   @Override
   protected void initialize() {
-    Robot.m_shooter.shoot(0.7);
+    Robot.m_shooter.shoot(0);
   }
 
 }

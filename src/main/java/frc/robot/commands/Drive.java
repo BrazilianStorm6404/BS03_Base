@@ -7,9 +7,7 @@
 
 package frc.robot.commands;
 
-
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 /**
@@ -27,12 +25,13 @@ public class Drive extends Command {
     requires(Robot.m_drive);
   }
 
+  double vel = 0.9;
+  double vel_marcha;
   /**
    * <p> mo needed initialization </p>
    */
   @Override
   protected void initialize() {
-
   }
 
   /**
@@ -41,17 +40,21 @@ public class Drive extends Command {
   
   @Override
   protected void execute() {
-    mover = Robot.m_oi.driverController.getY(); 
-    girar = Robot.m_oi.driverController.getX();
-
-    SmartDashboard.putBoolean("Marcha",Robot.m_oi.buttonX.get());
-
-    if (Robot.m_oi.buttonX.get()) {
-      Robot.m_drive.arcadeDrive(mover*0.6,girar*0.6);
+    if (Robot.m_oi.driverController.getY() > 0) {
+      Robot.m_drive.EsquerdaDA.set(true);
+      Robot.m_drive.EsquerdaDB.set(false);
     } else {
-      Robot.m_drive.arcadeDrive(mover,girar);
+      Robot.m_drive.EsquerdaDA.set(false);
+      Robot.m_drive.EsquerdaDB.set(true);
     }
-    
+
+    if( Robot.m_oi.buttonX.get() ){
+      vel_marcha = vel*0.6;
+    } else {
+      vel = 1;
+    }
+
+    Robot.m_drive.arcadeDrive( vel * Robot.m_oi.driverController.getY()*-1, vel * Robot.m_oi.driverController.getX() );
   }
 
   

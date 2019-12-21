@@ -13,34 +13,23 @@ public class RobotMap {
   public static final int XBOX_CONTROL_DRIVER = 0;
 
   
-  /**
-   * Drivetrain controllers ports.
-   * Portas de motores de tração.
-   */
-  public static final int MOTOR_FRONT_LEFT = 3;
+  public static final int MOTOR_FRONTAL_DIREITO = 3;
+  public static final int MOTOR_FRONTAL_ESQUERDO = 0;
+  public static final int MOTOR_TRASEIRO_DIREITO = 4;
 
-  /**
-   * Drivetrain controllers ports.
-   * Portas de motores de tração.
-   */
-  public static final int MOTOR_BACK_LEFT = 2;
+  // controlador arduino
+  public static final int MOTOR_TRASEIRO_ESQUERDO_A = 6; // porta pwm para frente
+  public static final int MOTOR_TRASEIRO_ESQUERDO_B = 7; // porta pwm para tras
 
-  /**
-   * Drivetrain controllers ports.
-   * Portas de motores de tração.
-   */
-  public static final int MOTOR_FRONT_RIGHT = 1;
+  //pinos
+  public static final int PINO_DA = 2;
+  public static final int PINO_DB = 3; 
 
-  /**
-   * Drivetrain controllers ports.
-   * Portas de motores de tração.
-   */
-  public static final int MOTOR_BACK_RIGHT = 0;
+  //
+  public static final int SHOOTER_ALFA = 1;
 
-  public static final int SHOOTER_ALFA = 0;
+  public static final int SHOOTER_BETA = 0;
 
-  public static final int SHOOTER_BETA = 1;
-
-  public static final int SPARK_BOOSTER = 9;
+  public static final int SPARK_BOOSTER = 5;
 
 }

@@ -14,13 +14,10 @@ import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.Jaguar;
-import edu.wpi.first.wpilibj.SPI;
-
-import frc.robot.commands.Drive;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import frc.robot.RobotMap;
+import frc.robot.commands.Drive;
+
 
 
 /**
@@ -32,85 +29,98 @@ import frc.robot.RobotMap;
  */
 public class Drivetrain extends PIDSubsystem {
 
-  private DifferentialDrive drive;
+  
+  public final DifferentialDrive drive;
   public AHRS navX;
   public double pidOutput;
-
+  public Spark FrontalDireito, FrontalEsquerdo, TraseiroDireito, TraseiroEsquerdaA, TraseiroEsquerdaB;
+  public DigitalOutput EsquerdaDA, EsquerdaDB;
   public Drivetrain() {
-     
-    // This super is inherited from the PIDSubsytem to set values to the P, I and D constants.
-    super("Drivetrain", 0.1,0.0003, 0); 
+
+    // This super is inherited from the PIDSubsytem to set values to the P, I and D
+    // constants.
+    super("Drivetrain", 0.1, 0.0003, 0);
 
     // We will use the navx to get feedback about the robot's yaw and acceleration
 
-    // The differential drive uses the left and right motors from the robot as parameters.
-   
-    Spark BackLeft = new Spark(RobotMap.MOTOR_BACK_LEFT);
-    Spark FrontLeft = new Spark(RobotMap.MOTOR_FRONT_LEFT);
-    VictorSP FrontRight = new VictorSP(RobotMap.MOTOR_FRONT_RIGHT);
-    Jaguar BackRight = new Jaguar(RobotMap.MOTOR_BACK_RIGHT);
-
-    SpeedControllerGroup Left = new SpeedControllerGroup(BackLeft, FrontLeft);
-    SpeedControllerGroup Right = new SpeedControllerGroup(BackRight, FrontRight);
+    // The differential drive uses the left and right motors from the robot as
+    // parameters.
+    FrontalDireito = new Spark(RobotMap.MOTOR_FRONTAL_DIREITO);
+    //FrontalDireito.setInverted(true);
+    FrontalEsquerdo = new Spark(RobotMap.MOTOR_FRONTAL_ESQUERDO);
+    TraseiroDireito = new Spark(RobotMap.MOTOR_TRASEIRO_DIREITO);
+    TraseiroEsquerdaA = new Spark(RobotMap.MOTOR_TRASEIRO_ESQUERDO_A);
+    TraseiroEsquerdaB = new Spark(RobotMap.MOTOR_TRASEIRO_ESQUERDO_B);
     
-    drive = new DifferentialDrive(Left,Right); 
+    EsquerdaDA = new DigitalOutput(RobotMap.PINO_DA); // habilita pwm para frente
+    EsquerdaDB = new DigitalOutput(RobotMap.PINO_DB); // habilita pwm para tras
 
-    navX = new AHRS(SPI.Port.kMXP); 
-    navX.reset();
+    SpeedControllerGroup direito = new SpeedControllerGroup(TraseiroDireito, FrontalDireito);
+    SpeedControllerGroup esquerdo = new SpeedControllerGroup(TraseiroEsquerdaA, TraseiroEsquerdaB, FrontalEsquerdo);
 
+    drive = new DifferentialDrive(direito, esquerdo);
     // These are the PID configs. DONT FORGET TO ENABLE() IT.
-    setInputRange(-180f,180f);
-    setOutputRange(-0.5f, 0.5f); 
+    setInputRange(-180f, 180f);
+    setOutputRange(-0.5f, 0.5f);
     setAbsoluteTolerance(3);
     setSetpoint(0);
-    enable();    
-   
+    enable();
   }
 
   @Override
   public void initDefaultCommand() {
-    
-    setDefaultCommand(new Drive()); // We use the Drive() command as default because that is the primary function of this subsystem.
-
+    setDefaultCommand(new Drive()); 
+    // We use the Drive() command as default because that is the primary function of
+    // this subsystem.
   }
 
   /**
-   *  This method is used to set values to the driver's motors. It is set based on the controller's axys.
-   *  It is similar to a cartesian plane. Move parameter is y, and spin parameter is x.
-   *  If the robot's axis is inverted, be free to add a minus (-) to the parameter, or remove it.
-   *  Or you can use the setInverted() method. 
-   *  @param move double that is used as intensity of the axis
-   *  @param spin double that is used to compute the heading and bearing of the axis
-   *  @see DifferentialDrive
+   * This method is used to set values to the driver's motors. It is set based on
+   * the controller's axys. It is similar to a cartesian plane. Move parameter is
+   * y, and spin parameter is x. If the robot's axis is inverted, be free to add a
+   * minus (-) to the parameter, or remove it. Or you can use the setInverted()
+   * method.
+   * 
+   * @param move double that is used as intensity of the axis
+   * @param spin double that is used to compute the heading and bearing of the
+   *             axis
+   * @see DifferentialDrive
    */
-  public void arcadeDrive(double move, double spin){
-    SmartDashboard.putNumber("DriveTrain-Move",move);
-    SmartDashboard.putNumber("DriveTrain-Spin",spin);
-    SmartDashboard.putNumber("NavX-Yaw", navX.getYaw());
-    drive.arcadeDrive(-move, spin); 
+  public void arcadeDrive(final double move, final double spin) {
+    drive.arcadeDrive(-move, spin);
   }
-  
+
   public void stop() {
     drive.arcadeDrive(0, 0);
   }
 
   /**
-   * <p> ONLY THE DRIVETRAIN CAN USE IT </p>
-   * <p> returns the navx`s Yaw </p>
+   * <p>
+   * ONLY THE DRIVETRAIN CAN USE IT
+   * </p>
+   * <p>
+   * returns the navx`s Yaw
+   * </p>
+   * 
    * @return input for the PID class
    */
   @Override
-  protected double returnPIDInput() { 
-    return navX.getYaw();
+  protected double returnPIDInput() {
+    return 0;
   }
 
   /**
-   * <p> ONLY THE DRIVETRAIN CAN USE IT </p>
-   * <p> Stores a output for PID CALCULATIONS </p>
+   * <p>
+   * ONLY THE DRIVETRAIN CAN USE IT
+   * </p>
+   * <p>
+   * Stores a output for PID CALCULATIONS
+   * </p>
+   * 
    * @param output input for the PID class
    */
   @Override
-  protected void usePIDOutput(double output) {
+  protected void usePIDOutput(final double output) {
 
     // This variable stores the output for your PID calculation. It is actually configured to set values for the motors.
     this.pidOutput = output; 

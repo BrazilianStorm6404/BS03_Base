@@ -22,6 +22,7 @@ public class OI {
     public Button buttonX = new JoystickButton(driverController, 3);
 
     public OI(){
-        buttonB.whileActive(new ShooterShoot());      
+        buttonB.whenPressed(new ShooterStartShooting());      
+        buttonB.whenReleased(new ShooterStopShooting());
     }
 }

@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class MoveShooter extends Command {
@@ -26,10 +27,11 @@ public class MoveShooter extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    val = Robot.m_oi.driverController.getRawAxis(2) - Robot.m_oi.driverController.getRawAxis(2);
-    if(val>0) Robot.m_shooter.moveUp();
-    else if (val == 0) Robot.m_shooter.stop();
-    else Robot.m_shooter.moveDown();
+    val = Robot.m_oi.driverController.getRawAxis(2) - Robot.m_oi.driverController.getRawAxis(3);
+    SmartDashboard.putNumber("value",val);
+    if(val > 0.1) Robot.m_shooter.moveUp();
+    else if (val < -0.1) Robot.m_shooter.moveDown();
+    else Robot.m_shooter.stop();
   }
 
   // Make this return true when this Command no longer needs to run execute()

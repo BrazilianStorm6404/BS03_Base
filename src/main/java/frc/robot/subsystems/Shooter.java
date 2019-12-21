@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.MoveShooter;
 
@@ -36,19 +37,24 @@ public class Shooter extends Subsystem {
     setDefaultCommand(new MoveShooter());
   }
   
-  public void moveUp(){
-    alfa.set(true);
-    beta.set(false);
-  } 
-
   public void moveDown(){
     alfa.set(false);
     beta.set(true);
+    SmartDashboard.putBoolean("Subindo", false);
+    SmartDashboard.putBoolean("Parado", false);
+  } 
+
+  public void moveUp(){
+    alfa.set(true);
+    beta.set(false);
+    SmartDashboard.putBoolean("Subindo", true);
+    SmartDashboard.putBoolean("Parado", false);
   }
 
   public void stop(){
-    alfa.set(true);
-    beta.set(true);
+    alfa.set(false);
+    beta.set(false);
+    SmartDashboard.putBoolean("Parado", true);
   }
 
   public void shoot(double force){
