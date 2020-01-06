@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class AutonomousDistance extends Command {
@@ -51,11 +52,15 @@ public class AutonomousDistance extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    int aux = (int) SmartDashboard.getNumber("fim", 0);
+    SmartDashboard.putNumber("fim",aux+1);
+    Robot.m_drive.enc.reset();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    
   }
 }

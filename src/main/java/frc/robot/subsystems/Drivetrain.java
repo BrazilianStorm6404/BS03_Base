@@ -33,9 +33,12 @@ import frc.robot.RobotMap;
 public class Drivetrain extends PIDSubsystem {
 
   private DifferentialDrive drive;
+  private double move, spin;
   public AHRS navX;
   public double pidOutput;
   public Encoder enc;
+  private int leftState, rightState;
+  private SpeedControllerGroup Left, Right;
 
   public Drivetrain() {
      
@@ -51,8 +54,8 @@ public class Drivetrain extends PIDSubsystem {
     Spark FrontRight = new Spark(RobotMap.MOTOR_FRONT_RIGHT);
     Spark BackRight = new Spark(RobotMap.MOTOR_BACK_RIGHT);
 
-    SpeedControllerGroup Left = new SpeedControllerGroup(BackLeft, FrontLeft);
-    SpeedControllerGroup Right = new SpeedControllerGroup(BackRight, FrontRight);
+    Left = new SpeedControllerGroup(BackLeft, FrontLeft);
+    Right = new SpeedControllerGroup(BackRight, FrontRight);
     
     drive = new DifferentialDrive(Left,Right); 
 
@@ -112,6 +115,8 @@ public class Drivetrain extends PIDSubsystem {
   public void arcadeDrive(double move, double spin){
     SmartDashboard.putNumber("NavX-Yaw", navX.getYaw());
     SmartDashboard.putNumber("Encoder-Distance", enc.getDistance());
+    this.move = move;
+    this.spin = spin;
     if(-move < 0) enc.setReverseDirection(true);
     else if(-move >= 0) enc.setReverseDirection(false);  
     drive.arcadeDrive(-move, spin); 
@@ -143,5 +148,30 @@ public class Drivetrain extends PIDSubsystem {
     // This variable stores the output for your PID calculation. It is actually configured to set values for the motors.
     this.pidOutput = output; 
 
+  }
+
+  public void sendCANData() {
+    byte[] controllerData = RobotMap.CANControladores.readData(Integer.parseInt("2F6404AA", 16));
+
+    controllerData[0] = (byte) Math.abs((Left.get() * 100));
+    controllerData[1] = (byte) Math.abs((Right.get() * 100));
+    
+    if (Left.get() < 0) {
+      controllerData[2] = (byte) 1;
+    } else if (Left.get() == 0) {
+      controllerData[2] = (byte) 2;
+    } else {
+      controllerData[2] = (byte) 3;
+    }
+
+    if (Right.get() < 0) {
+      controllerData[3] = (byte) 1;
+    } else if (Right.get() == 0) {
+      controllerData[3] = (byte) 2;
+    } else {
+      controllerData[3] = (byte) 3;
+    }
+
+    RobotMap.CANControladores.writeData(controllerData, Integer.parseInt("2F6404BB", 16));
   }
 }

@@ -83,4 +83,10 @@ public class RobotMap {
   public static final int ENCODER_A = 2;
 
   public static final int ENCODER_B = 3;
+
+  public static CANHelper CANSensores, CANControladores;
+
+  public static int CAN_SENSORES_DEVICEID = 30;
+
+  public static int CAN_CONTROLADORES_DEVICEID = 31;
 }

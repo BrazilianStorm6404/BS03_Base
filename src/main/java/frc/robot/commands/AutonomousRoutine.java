@@ -8,38 +8,39 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.Robot;
 
 public class AutonomousRoutine extends CommandGroup {
   /**
    * Add your docs here.
    */
+
+  double unidadeOca;
   public AutonomousRoutine() {
     
     int Alfa = 90;
-    int A=200,B=300,C=400;
-    
+    int A=200,B=200,C=150;
+
+
     //Primeira Parte
+    /*
     addSequential(new AutonomousDistance(A));
     addSequential(new AutonomousTurn(Alfa));
     addSequential(new AutonomousDistance(B));
     addSequential(new AutonomousTurn(-Alfa));
     addSequential(new AutonomousDistance(C));
-    addSequential(new AutonomousTurn(90));
-
+    addSequential(new AutonomousTurn(-90));
+    */
+    
     //Segunda Parte
+    addParallel(new AutonomousTower(0.4, false));
+    addSequential(new AutonomousTapeTurn(2));
 
-    //Terceira Parte
+    //Terceira Partey
+    addSequential(new TimedDistance(1, true));
+    addSequential(new AutonomousTower(0.4, true));
+    addSequential(new TimedDistance(1, false));
 
-    // To run multiple commands at the same time,
-    // use addParallel()
-    // e.g. addParallel(new Command1());
-    // addSequential(new Command2());
-    // Command1 and Command2 will run in parallel.
-
-    // A command group will require all of the subsystems that each member
-    // would require.
-    // e.g. if Command1 requires chassis, and Command2 requires arm,
-    // a CommandGroup containing them would require both the chassis and the
-    // arm.
   }
+
 }

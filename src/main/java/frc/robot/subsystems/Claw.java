@@ -23,6 +23,8 @@ public class Claw extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
+  private int cargoState, clawState;
+  private double controlSpeed;
   private VictorSPX victorCargo;
   private Spark victorControl;
   public DigitalInput limitUp;
@@ -52,6 +54,7 @@ public class Claw extends Subsystem {
    */
   public void StopClaw (){
     victorControl.set(0);
+    clawState = 0;
   }
 
   /**
@@ -61,6 +64,7 @@ public class Claw extends Subsystem {
   public void ClawUp (){
     if (!limitUp.get()){
       victorControl.set(0.8);
+      clawState = 1;
     }
     else StopClaw();
   }
@@ -71,6 +75,7 @@ public class Claw extends Subsystem {
    */
   public void ClawDown (){
     victorControl.set(-0.45);
+    clawState = -1;
   }
   
 
@@ -80,6 +85,7 @@ public class Claw extends Subsystem {
    */
   public void pullCargo(){
     victorCargo.set(ControlMode.PercentOutput, cargoForce); 
+    cargoState = 1;
   }
 
   /**
@@ -88,6 +94,7 @@ public class Claw extends Subsystem {
    */
   public void dropCargo(){
     victorCargo.set(ControlMode.PercentOutput, -cargoForce); 
+    cargoState = -1;
   }
 
   /**
@@ -95,7 +102,38 @@ public class Claw extends Subsystem {
    * Function to stop the claw intake system.
    */
   public void stopCargo(){
-     victorCargo.set(ControlMode.PercentOutput, 0.0); 
+    victorCargo.set(ControlMode.PercentOutput, 0.0); 
+    cargoState = 0;
   }
 
+  public void sendCANData() {
+    byte[] controllerData = RobotMap.CANControladores.readData(Integer.parseInt("2F6404AA", 16));
+    byte[] sensorData = RobotMap.CANSensores.readData(Integer.parseInt("1F6404FF", 16));
+
+    if (cargoState == 1) {
+      controllerData[0] = (byte) 1;
+    } else if (cargoState == 0) {
+      controllerData[0] = (byte) 2;
+    } else if (cargoState == -1) {
+      controllerData[0] = (byte) 3;
+    }
+    
+    if (clawState == 1) {
+      controllerData[1] = (byte) 1;
+    } else if (clawState == 0) {
+      controllerData[1] = (byte) 2;
+    } else if (clawState == -1) {
+      controllerData[1] = (byte) 3;
+    }
+
+    if (limitUp.get() && limitDown.get()) {
+      sensorData[1] = (byte) 1;
+    } else if (limitUp.get()) {
+      sensorData[1] = (byte) 2;
+    } else if (limitDown.get()) {
+      sensorData[2] = (byte) 3;
+    }
+
+    RobotMap.CANControladores.writeData(controllerData, Integer.parseInt("2F6404AA", 16));
+  }
 }

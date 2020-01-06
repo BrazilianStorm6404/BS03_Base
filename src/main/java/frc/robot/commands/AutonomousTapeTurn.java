@@ -7,21 +7,30 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.Robot;
 
-public class AutonomousTurn extends Command {
-  double sp;
-  public AutonomousTurn(double setpoint) {
+/**
+ * Add your docs here.
+ */
+public class AutonomousTapeTurn extends TimedCommand {
+  /**
+   * Add your docs here.
+   */
+  private final double CONST_CONVERSION = -0.2;
+  private double sp;
+  public AutonomousTapeTurn(double timeout) {
+    super(timeout);
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
     requires(Robot.m_drive);
-    sp = setpoint;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     Robot.m_drive.navX.reset();
+    sp = Robot.entryDiff.getDouble(0.0) * CONST_CONVERSION;
     Robot.m_drive.setSetpoint(sp);
   }
 
@@ -36,22 +45,16 @@ public class AutonomousTurn extends Command {
     float tolerance = (float) (tolerancePercentage / 100 * Math.abs(desiredValue));
     return diff < tolerance;                                   
   }
-  
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return approximatelyEqual(sp, Robot.m_drive.navX.getYaw(), 1);
-  }
 
-  // Called once after isFinished returns true
+  // Called once after timeout
   @Override
   protected void end() {
-    int aux = (int) SmartDashboard.getNumber("fim", 0);
-    SmartDashboard.putNumber("fim",aux+1);
-    
-    Robot.m_drive.setSetpoint(0);
+    approximatelyEqual(sp, Robot.m_drive.navX.getYaw(), 2);
+    Robot.m_drive.navX.reset();
     Robot.m_drive.enc.reset();
+    Robot.m_drive.setSetpoint(0);
   }
+
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
