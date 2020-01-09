@@ -32,6 +32,7 @@ public class AutonomousTapeTurn extends TimedCommand {
     Robot.m_drive.navX.reset();
     sp = Robot.entryDiff.getDouble(0.0) * CONST_CONVERSION;
     Robot.m_drive.setSetpoint(sp);
+    Robot.m_drive.resetVirtualEncoder();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -49,9 +50,10 @@ public class AutonomousTapeTurn extends TimedCommand {
   // Called once after timeout
   @Override
   protected void end() {
-    approximatelyEqual(sp, Robot.m_drive.navX.getYaw(), 2);
+    approximatelyEqual(sp, Robot.m_drive.getVirtualYaw(), 2);
     Robot.m_drive.navX.reset();
     Robot.m_drive.enc.reset();
+    Robot.m_drive.resetVirtualEncoder();
     Robot.m_drive.setSetpoint(0);
   }
 

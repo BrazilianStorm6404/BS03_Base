@@ -55,6 +55,7 @@ public class Claw extends Subsystem {
   public void StopClaw (){
     victorControl.set(0);
     clawState = 0;
+    sendCANData();
   }
 
   /**
@@ -65,6 +66,7 @@ public class Claw extends Subsystem {
     if (!limitUp.get()){
       victorControl.set(0.8);
       clawState = 1;
+      sendCANData();
     }
     else StopClaw();
   }
@@ -76,6 +78,7 @@ public class Claw extends Subsystem {
   public void ClawDown (){
     victorControl.set(-0.45);
     clawState = -1;
+    sendCANData();
   }
   
 
@@ -86,6 +89,7 @@ public class Claw extends Subsystem {
   public void pullCargo(){
     victorCargo.set(ControlMode.PercentOutput, cargoForce); 
     cargoState = 1;
+    sendCANData();
   }
 
   /**
@@ -95,6 +99,7 @@ public class Claw extends Subsystem {
   public void dropCargo(){
     victorCargo.set(ControlMode.PercentOutput, -cargoForce); 
     cargoState = -1;
+    sendCANData();
   }
 
   /**
@@ -104,6 +109,7 @@ public class Claw extends Subsystem {
   public void stopCargo(){
     victorCargo.set(ControlMode.PercentOutput, 0.0); 
     cargoState = 0;
+    sendCANData();
   }
 
   public void sendCANData() {
@@ -131,7 +137,7 @@ public class Claw extends Subsystem {
     } else if (limitUp.get()) {
       sensorData[1] = (byte) 2;
     } else if (limitDown.get()) {
-      sensorData[2] = (byte) 3;
+      sensorData[1] = (byte) 3;
     }
 
     RobotMap.CANControladores.writeData(controllerData, Integer.parseInt("2F6404AA", 16));

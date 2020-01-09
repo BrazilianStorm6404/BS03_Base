@@ -34,11 +34,13 @@ public class Tower extends Subsystem {
   public void move(double vel){
     tower.set(ControlMode.PercentOutput, vel);
     this.vel = vel;
+    sendCANData();
   }
   
   public void stop() {
     tower.set(ControlMode.PercentOutput, 0);
     this.vel = 0;
+    sendCANData();
   }
 
 
@@ -60,7 +62,16 @@ public class Tower extends Subsystem {
       dataSensores[0] = (byte) 3;
     }
 
-    dataControladores[0] = (byte) (vel * 100);
+    // Colocar na documentação depois
+    if (vel < 0) {
+      dataControladores[1] = (byte) 1;
+    } else if (vel == 0) {
+      dataControladores[1] = (byte) 2;
+    } else {
+      dataControladores[1] = (byte) 3;
+    }
+
+    dataControladores[0] = (byte) Math.abs((vel * 100));
 
     RobotMap.CANSensores.writeData(dataSensores, Integer.parseInt("1F6404FF", 16));
     RobotMap.CANControladores.writeData(dataControladores, Integer.parseInt("2F6404FF", 16));

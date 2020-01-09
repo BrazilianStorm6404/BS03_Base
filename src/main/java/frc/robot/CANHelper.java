@@ -18,10 +18,11 @@ public class CANHelper {
     public CANData data;
     public CANHelper(int deviceID) {
         CANSender = new CAN(deviceID);
+        data = new CANData();
     }
 
     public void writeData(byte[] message, int id) {
-        CANSender.writePacketRepeating(message, id, 100);
+        CANSender.writePacketRepeating(message, id, 10);
     }
 
     public byte[] readData(int id) {

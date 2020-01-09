@@ -26,21 +26,23 @@ public class AutonomousDistance extends Command {
   protected void initialize() {
     Robot.m_drive.enc.reset();
     Robot.m_drive.navX.reset();
+    Robot.m_drive.resetVirtualEncoder();
+    Robot.m_drive.setSetpoint(0);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     // verificação para direcionamento do robô autonomo 
-    if(Robot.m_drive.enc.getDistance() > dist)
+    if(Robot.m_drive.getVirtualEncoder() > dist)
     Robot.m_drive.arcadeDrive(vel, Robot.m_drive.pidOutput);
-    else if(Robot.m_drive.enc.getDistance() <= dist) Robot.m_drive.arcadeDrive(-vel, Robot.m_drive.pidOutput);
+    else if(Robot.m_drive.getVirtualEncoder() <= dist) Robot.m_drive.arcadeDrive(-vel, Robot.m_drive.pidOutput);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return approximatelyEqual(dist, (float) Robot.m_drive.enc.getDistance(), (float) tolerance);
+    return approximatelyEqual(dist, (float) Robot.m_drive.getVirtualEncoder(), (float) tolerance);
   }
 
   public boolean approximatelyEqual(double desiredValue, float actualValue, float tolerancePercentage) {
@@ -55,6 +57,7 @@ public class AutonomousDistance extends Command {
     int aux = (int) SmartDashboard.getNumber("fim", 0);
     SmartDashboard.putNumber("fim",aux+1);
     Robot.m_drive.enc.reset();
+    Robot.m_drive.resetVirtualEncoder();
   }
 
   // Called when another command which requires one or more of the same

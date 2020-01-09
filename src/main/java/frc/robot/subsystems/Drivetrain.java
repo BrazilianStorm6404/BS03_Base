@@ -39,6 +39,7 @@ public class Drivetrain extends PIDSubsystem {
   public Encoder enc;
   private int leftState, rightState;
   private SpeedControllerGroup Left, Right;
+  private boolean checkEncoder;
 
   public Drivetrain() {
      
@@ -115,11 +116,13 @@ public class Drivetrain extends PIDSubsystem {
   public void arcadeDrive(double move, double spin){
     SmartDashboard.putNumber("NavX-Yaw", navX.getYaw());
     SmartDashboard.putNumber("Encoder-Distance", enc.getDistance());
-    this.move = move;
+    SmartDashboard.putNumber("Virtual Encoder", this.getVirtualEncoder());
+    SmartDashboard.putNumber("Virtual NavX", this.getVirtualYaw());
     this.spin = spin;
     if(-move < 0) enc.setReverseDirection(true);
     else if(-move >= 0) enc.setReverseDirection(false);  
-    drive.arcadeDrive(-move, spin); 
+    drive.arcadeDrive(-move, spin);
+    sendCANData(); 
   }
   
   public void stop() {
@@ -133,7 +136,7 @@ public class Drivetrain extends PIDSubsystem {
    */
   @Override
   protected double returnPIDInput() { 
-    return navX.getYaw();
+    return getVirtualYaw();
     // This is the input for the PID class. We are using the navx's Yaw.
   }
 
@@ -152,6 +155,7 @@ public class Drivetrain extends PIDSubsystem {
 
   public void sendCANData() {
     byte[] controllerData = RobotMap.CANControladores.readData(Integer.parseInt("2F6404AA", 16));
+    byte[] sensorData = RobotMap.CANSensores.readData(Integer.parseInt("2F6404DD", 16));
 
     controllerData[0] = (byte) Math.abs((Left.get() * 100));
     controllerData[1] = (byte) Math.abs((Right.get() * 100));
@@ -172,6 +176,72 @@ public class Drivetrain extends PIDSubsystem {
       controllerData[3] = (byte) 3;
     }
 
+    controllerData[4] = (byte) Math.abs(spin * 100);
+
+    if (spin < 0) {
+      controllerData[5] = (byte) 1;
+    } else if (spin == 0) {
+      controllerData[5] = (byte) 2;
+    } else {
+      controllerData[5] = (byte) 3;
+    }
+    
+    //sensorData[0] = (byte) 100;
+    //sensorData[1] = (byte) 100;
+    //sensorData[2] = (byte) 100;
+    //sensorData[3] = (byte) 100;
+   
+    if (checkEncoder) {
+      sensorData[4] = (byte) 1;
+    } else  {
+      sensorData[4] = (byte) 0;
+    }
+
     RobotMap.CANControladores.writeData(controllerData, Integer.parseInt("2F6404BB", 16));
+    RobotMap.CANSensores.writeData(sensorData, Integer.parseInt("2F6404DD", 16));
+  }
+
+  public void resetCAN() {
+    byte[] controllerData = { 00, 00, 00, 00, 00, 00, 00, 00 };
+    byte[] sensorData = { 00, 00, 00, 00, 00, 00, 00, 00 };
+    RobotMap.CANControladores.writeData(controllerData, Integer.parseInt("2F6404BB", 16));
+    RobotMap.CANSensores.writeData(sensorData, Integer.parseInt("2F6404DD", 16));
+
+  }
+
+  public int getVirtualEncoder() {
+    byte[] dados = RobotMap.CANSensores.readData(Integer.parseInt("2F6404DD", 16));
+    if (dados[1] == 1) {
+      return dados[0] * 100;
+    } else {
+      return dados[0] * -100;
+    }
+  }
+
+  public int getVirtualEncoderSign() {
+    byte[] dados = RobotMap.CANSensores.readData(Integer.parseInt("2F6404DD", 16));
+    return dados[1];
+  }
+
+  public int getVirtualYaw() {
+    byte[] dados = RobotMap.CANSensores.readData(Integer.parseInt("2F6404DD", 16));
+    if (dados[3] == 1) {
+      return dados[2];
+    } else {
+      return dados[2] * -1;
+    }
+  }
+
+  public int getVirtualYawSign() {
+    byte[] dados = RobotMap.CANSensores.readData(Integer.parseInt("2F6404DD", 16));
+    return dados[3];
+  }
+
+  public void resetVirtualEncoder() {
+    if (checkEncoder) {
+      checkEncoder = false;
+    } else {
+      checkEncoder = true;
+    }
   }
 }
