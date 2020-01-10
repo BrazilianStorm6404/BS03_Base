@@ -25,7 +25,7 @@ public class AutonomousRoutine extends CommandGroup {
     //Primeira Parte
     
     addSequential(new AutonomousDistance(A));
-    /*
+    
     addSequential(new AutonomousTurn(Alfa));
     addSequential(new AutonomousDistance(B));
     addSequential(new AutonomousTurn(-Alfa));
@@ -37,11 +37,10 @@ public class AutonomousRoutine extends CommandGroup {
     addParallel(new AutonomousTower(0.4, false));
     addSequential(new AutonomousTapeTurn(2));
 
-    //Terceira Partey
     addSequential(new TimedDistance(1, true));
     addSequential(new AutonomousTower(0.4, true));
     addSequential(new TimedDistance(1, false));
-    */
+    
   }
 
 }

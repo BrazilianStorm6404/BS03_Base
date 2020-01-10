@@ -41,7 +41,7 @@ public class Drive extends Command {
   @Override
   protected void execute() {
     mover = Robot.m_oi.driverController.getY(); 
-    girar = Robot.m_oi.driverController.getX();
+    girar = Robot.m_oi.driverController.getRawAxis(4);
 
     if (Robot.m_oi.buttonX.get()) {
       Robot.m_drive.arcadeDrive(mover*0.6,girar*0.6);

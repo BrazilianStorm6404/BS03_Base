@@ -9,19 +9,17 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.command.PIDSubsystem;
-
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
-
-import frc.robot.commands.Drive;
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
-
+import frc.robot.commands.Drive;
 
 /**
  * This subsystem includes all the motor controllers, variables and methods for the Drivetrain of the robot.
@@ -39,12 +37,13 @@ public class Drivetrain extends PIDSubsystem {
   public Encoder enc;
   private int leftState, rightState;
   private SpeedControllerGroup Left, Right;
-  private boolean checkEncoder;
+  public boolean checkEncoder, checkYaw;
 
   public Drivetrain() {
      
     // This super is inherited from the PIDSubsytem to set values to the P, I and D constants.
-    super("Drivetrain", 0.1,0.0003, 0); 
+    // 0.1,0.0003,0
+    super("Drivetrain", 0.1,0.5, .05); 
 
     // We will use the navx to get feedback about the robot's yaw and acceleration
 
@@ -118,6 +117,12 @@ public class Drivetrain extends PIDSubsystem {
     SmartDashboard.putNumber("Encoder-Distance", enc.getDistance());
     SmartDashboard.putNumber("Virtual Encoder", this.getVirtualEncoder());
     SmartDashboard.putNumber("Virtual NavX", this.getVirtualYaw());
+    SmartDashboard.putBoolean("Reset Virtual NavX", this.checkYaw);
+    SmartDashboard.putBoolean("Reset Virtual Encoder", this.checkEncoder);
+    SmartDashboard.putNumber("Plot Erro1",this.pidOutput);
+    Shuffleboard.getTab("SmartDashboard").add("Plot Erro",this.pidOutput)
+    .withWidget(BuiltInWidgets.kGraph);
+    
     this.spin = spin;
     if(-move < 0) enc.setReverseDirection(true);
     else if(-move >= 0) enc.setReverseDirection(false);  
@@ -192,9 +197,15 @@ public class Drivetrain extends PIDSubsystem {
     //sensorData[3] = (byte) 100;
    
     if (checkEncoder) {
-      sensorData[4] = (byte) 1;
+      controllerData[6] = (byte) 1;
     } else  {
-      sensorData[4] = (byte) 0;
+      controllerData[6] = (byte) 0;
+    }
+    
+    if (checkYaw) {
+      controllerData[7] = (byte) 1;
+    } else {
+      controllerData[7] = (byte) 0;
     }
 
     RobotMap.CANControladores.writeData(controllerData, Integer.parseInt("2F6404BB", 16));
@@ -206,7 +217,6 @@ public class Drivetrain extends PIDSubsystem {
     byte[] sensorData = { 00, 00, 00, 00, 00, 00, 00, 00 };
     RobotMap.CANControladores.writeData(controllerData, Integer.parseInt("2F6404BB", 16));
     RobotMap.CANSensores.writeData(sensorData, Integer.parseInt("2F6404DD", 16));
-
   }
 
   public int getVirtualEncoder() {
@@ -242,6 +252,14 @@ public class Drivetrain extends PIDSubsystem {
       checkEncoder = false;
     } else {
       checkEncoder = true;
+    }
+  }
+
+  public void resetVirtualYaw() {
+    if (checkYaw) {
+      checkYaw = false;
+    } else {
+      checkYaw = true;
     }
   }
 }

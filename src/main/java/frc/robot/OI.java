@@ -10,6 +10,7 @@ import frc.robot.commands.*;
 public class OI {
 
     public final Joystick driverController = new Joystick(RobotMap.XBOX_CONTROL_DRIVER);
+    public final Joystick driverController2 = new Joystick(RobotMap.XBOX_CONTROL_DRIVER+1);
 
     // We named the variables based on the xbox controller buttons
     Button buttonA = new JoystickButton(driverController, 1);

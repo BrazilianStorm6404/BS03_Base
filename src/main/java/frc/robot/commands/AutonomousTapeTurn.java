@@ -19,6 +19,7 @@ public class AutonomousTapeTurn extends TimedCommand {
    */
   private final double CONST_CONVERSION = -0.2;
   private double sp;
+  int i = 0;
   public AutonomousTapeTurn(double timeout) {
     super(timeout);
     // Use requires() here to declare subsystem dependencies
@@ -33,11 +34,17 @@ public class AutonomousTapeTurn extends TimedCommand {
     sp = Robot.entryDiff.getDouble(0.0) * CONST_CONVERSION;
     Robot.m_drive.setSetpoint(sp);
     Robot.m_drive.resetVirtualEncoder();
+    Robot.m_drive.resetVirtualYaw();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if (i == 0) {
+      Robot.m_drive.resetVirtualYaw();
+      Robot.m_drive.resetVirtualEncoder();
+      i++;
+    }
     Robot.m_drive.arcadeDrive(0, Robot.m_drive.pidOutput);
   }
 
@@ -53,7 +60,6 @@ public class AutonomousTapeTurn extends TimedCommand {
     approximatelyEqual(sp, Robot.m_drive.getVirtualYaw(), 2);
     Robot.m_drive.navX.reset();
     Robot.m_drive.enc.reset();
-    Robot.m_drive.resetVirtualEncoder();
     Robot.m_drive.setSetpoint(0);
   }
 

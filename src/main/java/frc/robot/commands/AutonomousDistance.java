@@ -13,6 +13,7 @@ import frc.robot.Robot;
 
 public class AutonomousDistance extends Command {
   double dist;
+  int i = 0;
   double tolerance = 1;
   // velocidade do autonomo
   double vel = 0.7;
@@ -26,6 +27,7 @@ public class AutonomousDistance extends Command {
   protected void initialize() {
     Robot.m_drive.enc.reset();
     Robot.m_drive.navX.reset();
+    Robot.m_drive.resetVirtualYaw();
     Robot.m_drive.resetVirtualEncoder();
     Robot.m_drive.setSetpoint(0);
   }
@@ -34,6 +36,11 @@ public class AutonomousDistance extends Command {
   @Override
   protected void execute() {
     // verificação para direcionamento do robô autonomo 
+    if (i == 0) {
+      Robot.m_drive.resetVirtualYaw();
+      Robot.m_drive.resetVirtualEncoder();
+      i++;
+    }
     if(Robot.m_drive.getVirtualEncoder() > dist)
     Robot.m_drive.arcadeDrive(vel, Robot.m_drive.pidOutput);
     else if(Robot.m_drive.getVirtualEncoder() <= dist) Robot.m_drive.arcadeDrive(-vel, Robot.m_drive.pidOutput);
@@ -57,7 +64,6 @@ public class AutonomousDistance extends Command {
     int aux = (int) SmartDashboard.getNumber("fim", 0);
     SmartDashboard.putNumber("fim",aux+1);
     Robot.m_drive.enc.reset();
-    Robot.m_drive.resetVirtualEncoder();
   }
 
   // Called when another command which requires one or more of the same
